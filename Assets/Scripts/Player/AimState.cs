@@ -6,13 +6,25 @@ namespace Player
     public class AimState: MonoBehaviour,IState
     {
         private PlayerControl _playerControl;
+        public static Action OnSetAim;
         private void Awake()
         {
             enabled = false;
         }
+        
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                _playerControl.playerView.ChangeAnimation(PlayerAnimType.shoot);
+                _playerControl.UpdateState(_playerControl.idleState);
+            }
+        }
+
 
         public void EnterState<T>(T control)
         {
+            OnSetAim?.Invoke();
             enabled = true;
             if (_playerControl==null)
             {
@@ -29,6 +41,7 @@ namespace Player
 
         private void KeepWeapon()
         {
+            EventManager.OnSetAction?.Invoke(ActionType.aim);
             Transform weapon = _playerControl.playerView.GetWeapon();
             _playerControl.playerView.SetToHand(weapon);
             weapon.localPosition=Vector3.zero;
