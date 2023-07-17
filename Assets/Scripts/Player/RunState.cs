@@ -5,14 +5,14 @@ namespace Player
 {
     public class RunState : MonoBehaviour, IState
     {
+        public static Action OnSetRun;
         private PlayerControl _playerControl;
-        public static  Action OnSetRun;
-
         private void Awake()
         {
             enabled = false;
-        }
 
+        }
+        
         public void EnterState<T>(T control)
         {
             enabled = true;
@@ -20,21 +20,14 @@ namespace Player
             EventManager.OnSetAction?.Invoke(ActionType.run);
             if (_playerControl == null) _playerControl = control as PlayerControl;
             _playerControl.playerView.ChangeAnimation(PlayerAnimType.walk);
-        }
-        
-        
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                _playerControl.UpdateState(_playerControl.aimState);
-            }
+            _playerControl.playerView.SetSpeed(2);
         }
 
 
         public void ExitState()
         {
             enabled = false;
+            _playerControl.playerView.SetSpeed(0);
         }
     }
 }

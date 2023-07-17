@@ -8,7 +8,6 @@ namespace Player
         private PlayerControl _playerControl;
         public static  Action<Transform> OnPlayerInit;
         public static  Action OnSetIdle;
-
         private void Awake()
         {
             enabled = false;
@@ -21,13 +20,9 @@ namespace Player
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetMouseButtonDown(0))
             {
-                _playerControl.UpdateState(_playerControl.runState);
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                _playerControl.UpdateState(_playerControl.deadState);
+               _playerControl.UpdateState(_playerControl.aimState);
             }
         }
 

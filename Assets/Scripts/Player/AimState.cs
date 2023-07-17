@@ -7,45 +7,50 @@ namespace Player
     {
         private PlayerControl _playerControl;
         public static Action OnSetAim;
+        private bool _aimActive;
         private void Awake()
         {
             enabled = false;
+            KeepAnimationControl.OnKeepWeapon += KeepWeapon;
         }
-        
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                _playerControl.playerView.ChangeAnimation(PlayerAnimType.shoot);
-                _playerControl.UpdateState(_playerControl.idleState);
-            }
-        }
-
-
         public void EnterState<T>(T control)
         {
-            OnSetAim?.Invoke();
-            enabled = true;
             if (_playerControl==null)
             {
                 _playerControl= control as PlayerControl;;
             }
             _playerControl.playerView.ChangeAnimation(PlayerAnimType.aim);
-            Invoke(nameof(KeepWeapon),0.9f);
+            EventManager.OnSetAction?.Invoke(ActionType.aim);
+
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                _playerControl.UpdateState(_playerControl.attackState);
+                
+            }
+            
         }
 
         public void ExitState()
         {
+            _playerControl.playerView.GetFollower().enabled = true;
+            _playerControl.playerView.GetRigidBody().isKinematic = false;
             enabled = false;
         }
 
         private void KeepWeapon()
         {
-            EventManager.OnSetAction?.Invoke(ActionType.aim);
+            OnSetAim?.Invoke();
+            _aimActive = true;
+            _playerControl.playerView.GetFollower().follow = false;
             Transform weapon = _playerControl.playerView.GetWeapon();
             _playerControl.playerView.SetToHand(weapon);
             weapon.localPosition=Vector3.zero;
             weapon.localEulerAngles = Vector3.zero;
+            enabled = true;
         }
     }
 }

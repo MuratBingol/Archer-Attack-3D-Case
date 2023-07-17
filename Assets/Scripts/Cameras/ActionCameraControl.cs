@@ -26,11 +26,11 @@ namespace Cameras
         {
             if (actionType == _type)
             {
-                _camera.enabled = true;
+                _camera.m_Priority=10;
                 return;
             }
 
-            _camera.enabled = false;
+            _camera.m_Priority=1;
         }
     }
 }
