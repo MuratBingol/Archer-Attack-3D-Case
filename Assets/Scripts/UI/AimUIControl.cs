@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections;
+using Damagable;
+using Player;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 namespace UI
 {
     public class AimUIControl : MonoBehaviour
     {
-        [SerializeField] private Image _aimImage;
         public static Action<Vector3> OnSetTarget;
+        [SerializeField] private Image _aimImage;
+        [SerializeField] private Color _defaultColor;
         private Camera _camera;
+        private Collider _lastTargetCollider;
         private Vector3 _targetPos;
+
         private void Awake()
         {
-            Player.AimState.OnSetAim += SetAimUI;
-            Player.AttackState.OnAttackState += Attack;
-            _camera=Camera.main;;
+            AimState.OnSetAim += SetAimUI;
+            AttackState.OnAttackState += Attack;
+            _camera = Camera.main;
         }
 
         private void Attack()
@@ -31,19 +35,42 @@ namespace UI
             StartCoroutine(AimControl());
         }
 
-        IEnumerator AimControl()
+        private IEnumerator AimControl()
         {
             while (true)
             {
-                Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
-                print("sd");
-                if (Physics.Raycast(ray,out RaycastHit hit))
+                var ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+                if (Physics.Raycast(ray, out var hit))
                 {
                     _targetPos = hit.point;
-                    print(_targetPos);
+                    TargetControl(hit.collider);
+                    yield return null;
+                    continue;
                 }
+                ResetRaycast();
                 yield return null;
             }
+        }
+
+
+        private void ResetRaycast()
+        {
+            
+            _targetPos = Vector3.zero;
+            _aimImage.color = _defaultColor;
+            _lastTargetCollider = null;
+        }
+        private void TargetControl(Collider targetCollider)
+        {
+            if (_lastTargetCollider != null && _lastTargetCollider == targetCollider) return;
+            _lastTargetCollider = targetCollider;
+            var damageable = _lastTargetCollider.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                _aimImage.color = damageable.GetAimColor();
+                return;
+            }
+            _aimImage.color = _defaultColor;
         }
     }
 }

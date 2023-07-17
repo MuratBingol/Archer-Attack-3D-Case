@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Damagable;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public abstract class EnemyBase : MonoBehaviour,IDamageable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Color _aimColor;
+    
+    public abstract void TakeDamage(float damage);
 
-    // Update is called once per frame
-    void Update()
+    public Color GetAimColor()
     {
-        
+        return _aimColor;
     }
 }

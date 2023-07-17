@@ -26,6 +26,10 @@ public class ArrowControl : MonoBehaviour
         transform.SetParent(null);
         _camera.m_Priority = 80;
         _target = target;
+        if (_target==Vector3.zero)
+        {
+            _target = transform.position+transform.forward*20;
+        }
         transform.LookAt(_target);
         enabled = true;
     }
