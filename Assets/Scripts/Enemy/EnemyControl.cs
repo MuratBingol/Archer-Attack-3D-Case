@@ -19,6 +19,8 @@ public class EnemyControl : EnemyBase
 
     public override void TakeDamage(float damage)
     {
+        OnDead?.Invoke(transform);
+       Destroy(this);
         
     }
 

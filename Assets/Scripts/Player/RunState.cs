@@ -1,4 +1,5 @@
 ﻿using System;
+using Managers;
 using UnityEngine;
 
 namespace Player
@@ -17,7 +18,6 @@ namespace Player
         {
             enabled = true;
             OnSetRun?.Invoke();
-            EventManager.OnSetAction?.Invoke(ActionType.run);
             if (_playerControl == null) _playerControl = control as PlayerControl;
             _playerControl.playerView.ChangeAnimation(PlayerAnimType.walk);
             _playerControl.playerView.SetSpeed(2);

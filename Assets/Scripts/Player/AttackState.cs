@@ -20,8 +20,13 @@ namespace Player
             }
             enabled = true;
             OnAttackState?.Invoke();
-            _playerControl.playerView.ChangeAnimation(PlayerAnimType.idle);
+            Invoke(nameof(SetIdle),1f);
+        }
+
+        private void SetIdle()
+        {
             _playerControl.playerView.GetFollower().follow = enabled;
+            _playerControl.UpdateState(_playerControl.idleState);
         }
 
         public void ExitState()

@@ -1,5 +1,6 @@
 ﻿using System;
 using Dreamteck.Splines;
+using Managers;
 using ScriptableObjects;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Player
             base.Awake();
             PathControl.OnSetPath += SetPath;
             PathControl.OnSetAttackPoint += SetIdleState;
+            EventManager.OnSetAction += ContinueRun;
             playerView.SetView(_playerData);
         }
 
@@ -29,7 +31,7 @@ namespace Player
         private void Start()
         {
             OnPlayerInit?.Invoke(transform);
-            UpdateState(runState);
+            UpdateState(idleState);
         }
 
         protected override void InitializeStates()
@@ -45,6 +47,15 @@ namespace Player
         {
             UpdateState(idleState);
         }
+        
+        private void ContinueRun(ActionType actionType)
+        {
+            if (actionType==ActionType.run)
+            {
+                UpdateState(runState);
+            }
+        }
+
 
         
     }

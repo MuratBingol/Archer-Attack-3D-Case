@@ -1,4 +1,5 @@
 ﻿using System;
+using Managers;
 using UnityEngine;
 
 namespace Player
@@ -27,16 +28,14 @@ namespace Player
         private void Update()
         {
             if (Input.GetMouseButtonUp(0))
-            {
+            { 
                 _playerControl.UpdateState(_playerControl.attackState);
-                
             }
             
         }
 
         public void ExitState()
         {
-            _playerControl.playerView.GetFollower().enabled = true;
             _playerControl.playerView.GetRigidBody().isKinematic = false;
             enabled = false;
         }

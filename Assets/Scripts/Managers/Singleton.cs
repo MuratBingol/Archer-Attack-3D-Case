@@ -1,23 +1,25 @@
 using UnityEngine;
 
-public abstract class Singleton<T> : MonoBehaviour where T : Component
+namespace Managers
 {
-    [SerializeField] private bool _isDontDestroy;
-
-    public T Instance { get; private set; }
-
-    protected void Awake()
+    public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
-        if (Instance == null)
-        {
-            Instance = this as T;
-        }
-        else if (Instance != this)
-        {
-            Destroy(Instance);
-            Instance = this as T;
-        }
+        [SerializeField] private bool _isDontDestroy;
 
-        if (_isDontDestroy) DontDestroyOnLoad(this);
+        public static T Instance { get; private set; }
+
+        protected void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this as T;
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
+
+            if (_isDontDestroy) DontDestroyOnLoad(this);
+        }
     }
 }

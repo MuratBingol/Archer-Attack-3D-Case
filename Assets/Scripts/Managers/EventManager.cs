@@ -1,19 +1,21 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+namespace Managers
 {
-    public static Action<ActionType> OnSetAction;
-    void Start()
+    public class EventManager : MonoBehaviour
     {
+        public static Action<ActionType> OnSetAction;
+        public static Action OnStartGame,OnWin,OnFail;
+        void Start()
+        {
         
-    }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
     }
 }

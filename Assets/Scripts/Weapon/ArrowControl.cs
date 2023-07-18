@@ -2,35 +2,34 @@ using Cinemachine;
 using UI;
 using UnityEngine;
 
-public class ArrowControl : MonoBehaviour
+namespace Weapon
 {
-    [SerializeField] private CinemachineVirtualCamera _camera;
-    private Vector3 _target;
-
-    private void Awake()
+    public class ArrowControl : BulletBase
     {
-        AimUIControl.OnSetTarget += GoTarget;
-        enabled = false;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        transform.Rotate(Vector3.forward * 4);
-
-        transform.position = Vector3.Lerp(transform.position, _target, 0.01f);
-    }
-
-    private void GoTarget(Vector3 target)
-    {
-        transform.SetParent(null);
-        _camera.m_Priority = 80;
-        _target = target;
-        if (_target==Vector3.zero)
+        [SerializeField] private TrailRenderer _trail;
+        
+        protected override void Awake()
         {
-            _target = transform.position+transform.forward*20;
+            base.Awake();
+            _trail.enabled = false;
         }
-        transform.LookAt(_target);
-        enabled = true;
+        
+        private void Update()
+        { 
+            transform.Rotate(Vector3.forward * 2);
+        }
+
+
+        protected override void Go()
+        {
+            _camera.m_Priority = 80;
+            _trail.enabled = true;
+        }
+
+        protected override void DisableBullet(Transform target)
+        {
+            base.DisableBullet(target);
+            _trail.enabled = false;
+        }
     }
 }

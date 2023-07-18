@@ -1,20 +1,18 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+namespace Managers
 {
-    public static event Action OnStartGame,OnWin,OnFail;
-  
-    void Start()
+    public class LevelManager : MonoBehaviour
     {
-        
-    }
+        private void Awake()
+        {
+            EventManager.OnWin += Win;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Win()
+        {
+           print("win");
+        }
     }
 }

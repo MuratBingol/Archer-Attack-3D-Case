@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UnityEngine;
 
@@ -7,12 +8,18 @@ public class RotateControl : MonoBehaviour
     private Camera _camera;
     private Vector3 _firstPos, _lastPos;
     private Vector3 lastEuler;
+    private Vector3 newEuler;
 
     private void Awake()
     {
         _camera = Camera.main;
         AimState.OnSetAim += EnableControl;
-        IdleState.OnSetIdle += () => enabled = false;
+        AttackState.OnAttackState += () => enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        newEuler = transform.eulerAngles;
     }
 
     private void Update()
@@ -26,12 +33,14 @@ public class RotateControl : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             _lastPos = GetPosition();
-            var newEuler = (_lastPos - _firstPos) * _treshdold + lastEuler;
+            newEuler = (_lastPos - _firstPos) * _treshdold + lastEuler;
             ClampValue(ref newEuler.x);
-            transform.eulerAngles = newEuler;
         }
+    }
 
-        if (Input.GetMouseButtonUp(0)) enabled = false;
+    private void FixedUpdate()
+    {
+        transform.eulerAngles = newEuler;
     }
 
     private void EnableControl()
