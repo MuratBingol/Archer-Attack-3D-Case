@@ -20,12 +20,12 @@ namespace Player
             }
             enabled = true;
             OnAttackState?.Invoke();
-            Invoke(nameof(SetIdle),1f);
+            Invoke(nameof(SetIdle),0.8f);
         }
 
         private void SetIdle()
         {
-            _playerControl.playerView.GetFollower().follow = enabled;
+            transform.eulerAngles=Vector3.up*transform.eulerAngles.y;
             _playerControl.UpdateState(_playerControl.idleState);
         }
 

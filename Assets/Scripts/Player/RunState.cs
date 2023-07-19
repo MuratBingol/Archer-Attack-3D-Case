@@ -21,6 +21,7 @@ namespace Player
             if (_playerControl == null) _playerControl = control as PlayerControl;
             _playerControl.playerView.ChangeAnimation(PlayerAnimType.walk);
             _playerControl.playerView.SetSpeed(2);
+            _playerControl.playerView.GetFollower().follow = enabled;
         }
 
 

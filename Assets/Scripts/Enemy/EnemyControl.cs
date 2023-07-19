@@ -20,9 +20,13 @@ public class EnemyControl : EnemyBase
     public override void TakeDamage(float damage)
     {
         OnDead?.Invoke(transform);
+       _animator.enabled = false;
+       print("take");
+       FindRigidbodies(transform);
        Destroy(this);
-        
     }
+    
+    
 
     public void Stop()
     {

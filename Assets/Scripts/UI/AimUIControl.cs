@@ -62,9 +62,8 @@ namespace UI
         }
         private void TargetControl(Collider targetCollider)
         {
-            if (_lastTargetCollider != null && _lastTargetCollider == targetCollider) return;
             _lastTargetCollider = targetCollider;
-            var damageable = _lastTargetCollider.GetComponent<IDamageable>();
+            var damageable = _lastTargetCollider.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
                 _aimImage.color = damageable.GetAimColor();

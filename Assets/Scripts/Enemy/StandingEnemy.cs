@@ -8,6 +8,8 @@ public class StandingEnemy : EnemyBase
 
     public override void TakeDamage(float damage)
     {
-        throw new System.NotImplementedException();
+        OnDead?.Invoke(transform);
+        _animator.enabled = false;
+        Destroy(this);
     }
 }

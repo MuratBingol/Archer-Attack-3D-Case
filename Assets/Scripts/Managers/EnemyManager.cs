@@ -8,7 +8,7 @@ namespace Managers
         public void RemoveArea()
         {
              areaCount--;
-                Invoke(nameof(ControlCount),0.5f);
+                Invoke(nameof(ControlCount),1f);
         }
 
         private void ControlCount()

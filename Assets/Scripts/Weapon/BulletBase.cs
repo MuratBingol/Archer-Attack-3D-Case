@@ -28,11 +28,23 @@ namespace Weapon
             if (DistanceControl()) DestroyBullet();
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision collision)
         {
-            DisableBullet(other.transform);
-            var _damageable = other.gameObject.GetComponent<IDamageable>();
-            if (_damageable != null) Hit(_damageable);
+
+            _camera.enabled = false;
+            DisableBullet(collision.transform);
+            IDamageable _damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (_damageable == null) _damageable =collision.gameObject.GetComponentInParent<IDamageable>();
+            if (_damageable!=null)Hit(_damageable);
+            Rigidbody otherRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+            if (otherRigidbody != null)
+            {
+                otherRigidbody.isKinematic = false;
+                Vector3 pushDirection = collision.contacts[0].normal;
+                otherRigidbody.AddForce(pushDirection * 20, ForceMode.Impulse); 
+            }
+
+
         }
 
         protected abstract void Go();
@@ -71,15 +83,15 @@ namespace Weapon
         protected virtual void DisableBullet(Transform target)
         {
             if (!enabled) return;
+            _camera.m_LookAt = null;
+            _camera.enabled = false;
             enabled = false;
             _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
             _rigidbody.isKinematic = true;
-            _camera.enabled = false;
             var neww = Instantiate(new GameObject());
             neww.transform.SetParent(target);
-            transform.SetParent(neww.transform, true);
+            transform.GetChild(0).SetParent(neww.transform, true);
         }
-
         private void Hit(IDamageable damageable)
         {
             damageable.TakeDamage(_bulletData.damage);

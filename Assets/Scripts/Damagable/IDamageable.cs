@@ -6,5 +6,6 @@ namespace Damagable
     {
         void TakeDamage(float damage);
         Color GetAimColor();
+        
     }
 }
