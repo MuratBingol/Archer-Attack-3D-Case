@@ -177,6 +177,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneLoading
       objectReference: {fileID: 0}
+    - target: {fileID: 1741525029928183193, guid: f3a380adcab8fda499a30fee6aab3dfb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8359956815494500117, guid: f3a380adcab8fda499a30fee6aab3dfb,
         type: 3}
       propertyPath: m_Pivot.x
@@ -430,6 +435,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5057601628701000842}
     m_Modifications:
+    - target: {fileID: 822465145484889901, guid: 0aa95564e19ad1c40ad70d1466be5094,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1539567198980037873, guid: 0aa95564e19ad1c40ad70d1466be5094,
         type: 3}
       propertyPath: m_Name
@@ -538,6 +548,11 @@ PrefabInstance:
     - target: {fileID: 5683394516657741550, guid: 0aa95564e19ad1c40ad70d1466be5094,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117779839765046860, guid: 0aa95564e19ad1c40ad70d1466be5094,
+        type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

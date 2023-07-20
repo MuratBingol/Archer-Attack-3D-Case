@@ -20,6 +20,7 @@ namespace Managers
         {
             base.Awake();
             currentLevel = _levelData.CurrentLevel;
+            playedLevel = _levelData.PlayedLevelCount;
             EventManager.OnWin += Win;
             EventManager.OnFail += Fail;
             AttackState.OnAttackState += BulletControl;
