@@ -20,9 +20,15 @@ namespace UI
         private void Awake()
         {
             AimState.OnSetAim += SetAimUI;
+            EventManager.OnFail += DisableAim;
+            EventManager.OnWin += DisableAim;
             AttackState.OnAttackState += Attack;
-            EventManager.OnSetAction += ((type => _aimImage.enabled = false));
             _camera = Camera.main;
+        }
+
+        private void DisableAim()
+        {
+            gameObject.SetActive(false);
         }
 
         private void Attack()
@@ -72,6 +78,14 @@ namespace UI
                 return;
             }
             _aimImage.color = _defaultColor;
+        }
+
+        private void OnDisable()
+        {
+            AimState.OnSetAim -= SetAimUI;
+            AttackState.OnAttackState -= Attack;
+            EventManager.OnFail -= DisableAim;
+            EventManager.OnWin -= DisableAim;
         }
     }
 }

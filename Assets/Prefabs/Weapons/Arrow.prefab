@@ -390,7 +390,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!1001 &2137770236498618388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -507,5 +507,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.023958301, y: 0.0239584, z: 0.0981164}
-  m_Center: {x: -0.00000004967054, y: 0, z: 0.13758206}
+  m_Size: {x: 0.023958301, y: 0.0239584, z: 0.17069513}
+  m_Center: {x: -0.00000004967054, y: 0, z: 0.1012927}

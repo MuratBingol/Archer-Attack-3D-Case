@@ -1,6 +1,7 @@
 using System;
 using Cinemachine;
 using Damagable;
+using Managers;
 using Player;
 using UI;
 using UnityEngine;
@@ -21,9 +22,14 @@ namespace Weapon
         protected virtual void Awake()
         {
             AimUIControl.OnSetTarget += SetTarget;
-            DeadState.OnSetDead += () => gameObject.SetActive(false);
+            DeadState.OnSetDead += DestroyObj;
             _rigidbody = GetComponent<Rigidbody>();
             enabled = false;
+        }
+
+        private void DestroyObj()
+        {
+           Destroy(gameObject);   
         }
 
         private void FixedUpdate()
@@ -36,10 +42,13 @@ namespace Weapon
         {
             if (_isHit) return;
             _isHit = true;
+            EventManager.OnSetAction?.Invoke(ActionType.idle);
             DisableBullet(collision.transform);
             IDamageable _damageable = collision.gameObject.GetComponent<IDamageable>();
             if (_damageable == null) _damageable =collision.gameObject.GetComponentInParent<IDamageable>();
             if (_damageable!=null)Hit(_damageable,collision.GetContact(0).point);
+            CountControl();
+            
         }
 
         protected abstract void Go();
@@ -62,9 +71,17 @@ namespace Weapon
             Go();
         }
 
+        private void CountControl()
+        {
+            if (LevelManager.Instance.bulletCount<=0 && EnemyManager.Instance.areaCount>0)
+            {
+                EventManager.OnFail?.Invoke();
+            }
+        }
         private void DestroyBullet()
         {
             _camera.enabled = false;
+            EventManager.OnSetAction?.Invoke(ActionType.idle);
             Destroy(gameObject, 3);
             OnHit?.Invoke(transform.position);
         }
@@ -77,7 +94,7 @@ namespace Weapon
 
         protected virtual void DisableBullet(Transform target)
         {
-            
+            OnHit?.Invoke(transform.position);
             _collider.enabled = false;
             if (!enabled) return;
             enabled = false;
@@ -90,7 +107,12 @@ namespace Weapon
         private void Hit(IDamageable damageable,Vector3 contactPoint)
         {
             damageable.TakeDamage(_bulletData.damage,contactPoint);
-            OnHit?.Invoke(transform.position);
+        }
+
+        private void OnDestroy()
+        {
+            AimUIControl.OnSetTarget -= SetTarget;
+            DeadState.OnSetDead -= DestroyObj;
         }
     }
 }

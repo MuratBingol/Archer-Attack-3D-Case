@@ -42,5 +42,9 @@ public class HostageControl : EnvironmentBase
         enabled = false;
         Destroy(this);
     }
-    
+
+    private void OnDisable()
+    {
+        EnemyArea.OnSafedArea -= Save;
+    }
 }

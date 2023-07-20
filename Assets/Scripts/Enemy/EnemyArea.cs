@@ -67,5 +67,9 @@ public class EnemyArea : MonoBehaviour
             }
         }
     }
-    
+
+    private void OnDisable()
+    {
+        EnemyBase.OnDead -= DeadControl;
+    }
 }

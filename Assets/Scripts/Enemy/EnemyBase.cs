@@ -88,8 +88,13 @@ public abstract class EnemyBase : StateControl<EnemyBase>, IAttackable
 
     protected void Dead()
     {
-        BulletBase.OnHit -= StartFire;
         fireState.ExitState();
         enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        PlayerControl.OnPlayerInit -= SetPlayer;
+        BulletBase.OnHit -= StartFire;
     }
 }

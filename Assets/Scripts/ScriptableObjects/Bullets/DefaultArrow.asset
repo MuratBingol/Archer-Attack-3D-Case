@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eba579aee714140ab4ebb5d255ddc0e, type: 3}
   m_Name: DefaultArrow
   m_EditorClassIdentifier: 
-  speed: 0.3
+  speed: 0.45
   damage: 5
   maxDistance: 30

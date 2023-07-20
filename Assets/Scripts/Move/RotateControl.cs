@@ -1,4 +1,5 @@
 using System;
+using Managers;
 using Player;
 using UnityEngine;
 
@@ -14,8 +15,15 @@ public class RotateControl : MonoBehaviour
     {
         _camera = Camera.main;
         AimState.OnSetAim += EnableControl;
-        DeadState.OnSetDead += () => enabled = false;
-        AttackState.OnAttackState += () => enabled = false;
+        DeadState.OnSetDead += Disable;
+        AttackState.OnAttackState += Disable;
+        EventManager.OnFail += Disable;
+        EventManager.OnWin += Disable;
+    }
+
+    private void Disable()
+    {
+        enabled = false;
     }
 
     private void OnEnable()
@@ -63,5 +71,14 @@ public class RotateControl : MonoBehaviour
     {
         return new Vector3(-_camera.ScreenToViewportPoint(Input.mousePosition).y,
             _camera.ScreenToViewportPoint(Input.mousePosition).x, 0);
+    }
+
+    private void OnDestroy()
+    {
+        AimState.OnSetAim -= EnableControl;
+        DeadState.OnSetDead -= Disable;
+        AttackState.OnAttackState -= Disable;
+        EventManager.OnFail -= Disable;
+        EventManager.OnWin -= Disable;
     }
 }

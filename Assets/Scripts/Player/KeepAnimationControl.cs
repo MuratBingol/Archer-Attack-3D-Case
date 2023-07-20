@@ -8,17 +8,7 @@ namespace Player
     public class KeepAnimationControl : MonoBehaviour
     {
         public static Action OnKeepWeapon;
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
+  
         public void TriggerAction()
         {
             OnKeepWeapon?.Invoke();

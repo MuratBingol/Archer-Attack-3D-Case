@@ -22,6 +22,7 @@ namespace Player
             }
             Destroy(_playerControl);
             OnSetDead?.Invoke();
+            EventManager.OnFail?.Invoke();
             EventManager.OnSetAction?.Invoke(ActionType.dead);
             _playerControl.playerView.GetFollower().enabled = false;
             

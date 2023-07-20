@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Damagable;
 using UnityEngine;
 
@@ -8,14 +7,14 @@ namespace Enemy
     public class FireState : MonoBehaviour, IState
     {
         private Coroutine _attackCoroutine;
-        private EnemyBase _enemyBase;
         private IDamageable _damageable;
+        private EnemyBase _enemyBase;
 
         private void Awake()
         {
             enabled = false;
         }
-        
+
 
         public void EnterState<T>(T control)
         {
@@ -34,6 +33,7 @@ namespace Enemy
                 StopCoroutine(_attackCoroutine);
                 _attackCoroutine = null;
             }
+
             enabled = false;
         }
 
@@ -43,9 +43,8 @@ namespace Enemy
             while (true)
             {
                 _enemyBase.hitParticle.Play();
-                _damageable.TakeDamage(_enemyBase.damage,Vector3.zero);
+                _damageable.TakeDamage(_enemyBase.damage, Vector3.zero);
                 yield return delay;
-              
             }
         }
     }

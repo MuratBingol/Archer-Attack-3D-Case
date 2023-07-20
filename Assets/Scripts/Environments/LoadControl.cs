@@ -24,10 +24,4 @@ public class LoadControl : EnvironmentBase
             Destroy(this);
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

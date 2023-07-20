@@ -1,5 +1,9 @@
 ﻿using System;
+using Managers;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using Weapon;
 
 namespace Player
 {
@@ -20,7 +24,7 @@ namespace Player
             }
             enabled = true;
             OnAttackState?.Invoke();
-            Invoke(nameof(SetIdle),0.8f);
+            Invoke(nameof(SetIdle),0.3f);
         }
 
         private void SetIdle()

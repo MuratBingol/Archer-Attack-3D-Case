@@ -8,6 +8,6 @@ namespace Weapon
     {
         public float speed;
         public int damage;
-        public float maxDistance=Mathf.Infinity;
+        public float maxDistance;
     }
 }

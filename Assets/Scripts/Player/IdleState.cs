@@ -10,8 +10,8 @@ namespace Player
     {
         public static Action<Transform> OnPlayerInit;
         public static Action OnSetIdle;
-        private PlayerControl _playerControl;
         private PointerEventData _eventData;
+        private PlayerControl _playerControl;
         private List<RaycastResult> _result;
 
         private void Awake()
@@ -19,7 +19,6 @@ namespace Player
             enabled = false;
             _eventData = new PointerEventData(EventSystem.current);
             _result = new List<RaycastResult>();
-            EventManager.OnSetAction += ContinueRun;
         }
 
         private void Start()
@@ -29,31 +28,33 @@ namespace Player
 
         private void Update()
         {
+            if (LevelManager.Instance.bulletCount <= 0) return;
             if (Input.GetMouseButtonDown(0))
                 if (ControlUITouch())
+                {
                     _playerControl.UpdateState(_playerControl.aimState);
+                    enabled = false;
+                }
+                   
         }
 
         public void EnterState<T>(T control)
         {
             OnSetIdle?.Invoke();
             EventManager.OnSetAction?.Invoke(ActionType.idle);
-            enabled = true;
             _playerControl = control as PlayerControl;
             _playerControl.playerView.ChangeAnimation(PlayerAnimType.idle);
+            Invoke(nameof(EnabledIdle),0.5f);
+        }
+
+        private void EnabledIdle()
+        {
+            enabled = true;
         }
 
         public void ExitState()
         {
             enabled = false;
-        }
-
-        private void ContinueRun(ActionType actionType)
-        {
-            if (actionType==ActionType.run)
-            {
-                _playerControl.UpdateState(_playerControl.runState);
-            }
         }
 
         private bool ControlUITouch()

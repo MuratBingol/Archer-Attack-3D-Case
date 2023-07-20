@@ -26,8 +26,20 @@ public class HealthBar : MonoBehaviour
 
     private void DisableBar()
     {
-     transform.parent.GetComponent<IDamageable>().GetDamageAction().RemoveListener(SetBar);
-     
-        gameObject.SetActive(false);
+        if (transform.parent.GetComponent<IDamageable>()!=null)
+        {
+            transform.parent.GetComponent<IDamageable>().GetDamageAction().RemoveListener(SetBar);
+        }
+    
+     gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        if (transform.parent.GetComponent<IDamageable>()!=null)
+        {
+            DisableBar();
+        }
+       
     }
 }
