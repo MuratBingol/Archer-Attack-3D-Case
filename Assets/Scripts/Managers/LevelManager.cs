@@ -8,6 +8,18 @@ namespace Managers
         private void Awake()
         {
             EventManager.OnWin += Win;
+            EventManager.OnFail += Fail;
+        }
+
+        private void DisableEvents()
+        {
+            EventManager.OnWin -= Win;
+            EventManager.OnFail -= Fail;
+        }
+
+        private void Fail()
+        {
+            print("fail");
         }
 
         private void Win()
