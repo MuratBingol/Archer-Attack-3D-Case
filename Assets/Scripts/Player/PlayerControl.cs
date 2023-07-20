@@ -1,18 +1,20 @@
 ﻿using System;
+using Damagable;
 using Dreamteck.Splines;
 using Managers;
 using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Player
 {
-    public class PlayerControl:StateControl<PlayerControl>
+    public class PlayerControl:StateControl<PlayerControl>,IDamageable
     {
         [SerializeField] private PlayerData _playerData;
         public IState idleState,aimState,attackState,deadState,runState;
-        private IState _currentState;
         public static  Action<Transform> OnPlayerInit; 
         public PlayerView playerView;
+        private UnityEvent<float, float> OnTakeDamage;
 
         protected override void Awake()
         {
@@ -57,6 +59,25 @@ namespace Player
         }
 
 
-        
+        public void TakeDamage(float damage,Vector3 contactPoint)
+        {
+            playerView.health -= damage;
+            OnTakeDamage?.Invoke(playerView.health,_playerData.health);
+            if (playerView.health<=0 && _currentState!=deadState)
+            {
+                UpdateState(deadState);
+                Destroy(this);
+            }
+        }
+
+        public UnityEvent<float, float> GetDamageAction()
+        {
+            if (OnTakeDamage==null)
+            {
+                OnTakeDamage = new UnityEvent<float, float>();
+            }
+
+            return OnTakeDamage;
+        }
     }
 }

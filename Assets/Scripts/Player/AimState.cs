@@ -8,7 +8,6 @@ namespace Player
     {
         private PlayerControl _playerControl;
         public static Action OnSetAim;
-        private bool _aimActive;
         private void Awake()
         {
             enabled = false;
@@ -31,7 +30,6 @@ namespace Player
             { 
                 _playerControl.UpdateState(_playerControl.attackState);
             }
-            
         }
 
         public void ExitState()
@@ -43,7 +41,6 @@ namespace Player
         private void KeepWeapon()
         {
             OnSetAim?.Invoke();
-            _aimActive = true;
             _playerControl.playerView.GetFollower().follow = false;
             Transform weapon = _playerControl.playerView.GetWeapon();
             _playerControl.playerView.SetToHand(weapon);

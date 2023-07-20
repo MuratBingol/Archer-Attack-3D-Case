@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enemy;
 using UnityEngine;
 
 public class StandingEnemy : EnemyBase
 {
-    
 
-    public override void TakeDamage(float damage)
+    protected override void InitializeStates()
     {
-        OnDead?.Invoke(transform);
-        _animator.enabled = false;
-        Destroy(this);
+        fallState = gameObject.AddComponent<FallState>();
+        fireState = gameObject.AddComponent<FireState>();
     }
 }

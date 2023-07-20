@@ -14,6 +14,7 @@ public class RotateControl : MonoBehaviour
     {
         _camera = Camera.main;
         AimState.OnSetAim += EnableControl;
+        DeadState.OnSetDead += () => enabled = false;
         AttackState.OnAttackState += () => enabled = false;
     }
 

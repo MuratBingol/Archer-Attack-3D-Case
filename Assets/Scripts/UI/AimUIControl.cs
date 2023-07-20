@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Damagable;
+using Managers;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace UI
         {
             AimState.OnSetAim += SetAimUI;
             AttackState.OnAttackState += Attack;
+            EventManager.OnSetAction += ((type => _aimImage.enabled = false));
             _camera = Camera.main;
         }
 
@@ -63,10 +65,10 @@ namespace UI
         private void TargetControl(Collider targetCollider)
         {
             _lastTargetCollider = targetCollider;
-            var damageable = _lastTargetCollider.GetComponentInParent<IDamageable>();
-            if (damageable != null)
+            var attackable = _lastTargetCollider.GetComponentInParent<IAttackable>();
+            if (attackable != null)
             {
-                _aimImage.color = damageable.GetAimColor();
+                _aimImage.color = attackable.GetAimColor();
                 return;
             }
             _aimImage.color = _defaultColor;

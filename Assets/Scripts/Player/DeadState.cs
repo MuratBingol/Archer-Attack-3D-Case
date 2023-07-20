@@ -19,12 +19,14 @@ namespace Player
             if (_playerControl == null)
             {
                 _playerControl = control as PlayerControl;
-                
             }
-
+            Destroy(_playerControl);
             OnSetDead?.Invoke();
             EventManager.OnSetAction?.Invoke(ActionType.dead);
+            _playerControl.playerView.GetFollower().enabled = false;
+            
             enabled = true;
+            _playerControl.playerView.ChangeAnimation(PlayerAnimType.dead);
         }
 
         public void ExitState()

@@ -362,6 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletData: {fileID: 11400000, guid: 6a945967d6f2814459a419f53564c6f8, type: 2}
   _camera: {fileID: 3727760267484574227}
+  _collider: {fileID: 4684879968027849815}
   _trail: {fileID: 6260146881469006734}
 --- !u!54 &6417225343967716546
 Rigidbody:

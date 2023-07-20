@@ -11,23 +11,6 @@ public class EnemyControl : EnemyBase
         _splineFollower = GetComponent<SplineFollower>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public override void TakeDamage(float damage)
-    {
-        OnDead?.Invoke(transform);
-       _animator.enabled = false;
-       print("take");
-       FindRigidbodies(transform);
-       Destroy(this);
-    }
-    
-    
-
     public void Stop()
     {
         _splineFollower.follow = false;
@@ -38,5 +21,9 @@ public class EnemyControl : EnemyBase
     {
         _splineFollower.follow = true;
     }
-    
+
+    protected override void InitializeStates()
+    {
+        
+    }
 }

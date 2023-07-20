@@ -1,6 +1,7 @@
 using System;
 using Cinemachine;
 using Damagable;
+using Player;
 using UI;
 using UnityEngine;
 
@@ -8,16 +9,19 @@ namespace Weapon
 {
     public abstract class BulletBase : MonoBehaviour
     {
-        public static Action OnHit;
+        public static Action<Vector3> OnHit;
         [SerializeField] protected BulletData _bulletData;
         [SerializeField] protected CinemachineVirtualCamera _camera;
         private float _distance;
         private Vector3 _firstPos;
         protected Rigidbody _rigidbody;
+        [SerializeField] private Collider _collider;
+        private bool _isHit;
 
         protected virtual void Awake()
         {
             AimUIControl.OnSetTarget += SetTarget;
+            DeadState.OnSetDead += () => gameObject.SetActive(false);
             _rigidbody = GetComponent<Rigidbody>();
             enabled = false;
         }
@@ -30,21 +34,12 @@ namespace Weapon
 
         private void OnCollisionEnter(Collision collision)
         {
-
-            _camera.enabled = false;
+            if (_isHit) return;
+            _isHit = true;
             DisableBullet(collision.transform);
             IDamageable _damageable = collision.gameObject.GetComponent<IDamageable>();
             if (_damageable == null) _damageable =collision.gameObject.GetComponentInParent<IDamageable>();
-            if (_damageable!=null)Hit(_damageable);
-            Rigidbody otherRigidbody = collision.gameObject.GetComponent<Rigidbody>();
-            if (otherRigidbody != null)
-            {
-                otherRigidbody.isKinematic = false;
-                Vector3 pushDirection = collision.contacts[0].normal;
-                otherRigidbody.AddForce(pushDirection * 20, ForceMode.Impulse); 
-            }
-
-
+            if (_damageable!=null)Hit(_damageable,collision.GetContact(0).point);
         }
 
         protected abstract void Go();
@@ -71,7 +66,7 @@ namespace Weapon
         {
             _camera.enabled = false;
             Destroy(gameObject, 3);
-            OnHit?.Invoke();
+            OnHit?.Invoke(transform.position);
         }
 
         private bool DistanceControl()
@@ -82,20 +77,20 @@ namespace Weapon
 
         protected virtual void DisableBullet(Transform target)
         {
+            
+            _collider.enabled = false;
             if (!enabled) return;
-            _camera.m_LookAt = null;
-            _camera.enabled = false;
             enabled = false;
-            _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            _camera.enabled = false;
             _rigidbody.isKinematic = true;
             var neww = Instantiate(new GameObject());
             neww.transform.SetParent(target);
             transform.GetChild(0).SetParent(neww.transform, true);
         }
-        private void Hit(IDamageable damageable)
+        private void Hit(IDamageable damageable,Vector3 contactPoint)
         {
-            damageable.TakeDamage(_bulletData.damage);
-            OnHit?.Invoke();
+            damageable.TakeDamage(_bulletData.damage,contactPoint);
+            OnHit?.Invoke(transform.position);
         }
     }
 }

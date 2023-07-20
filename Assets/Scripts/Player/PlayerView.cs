@@ -14,12 +14,13 @@ namespace Player
         [SerializeField] private WeaponManager _weaponBucket;
         [SerializeField] private SplineFollower _splineFollower;
         [SerializeField] private Rigidbody _rigidbody;
+        public float health;
 
 
 
         public void SetView(PlayerData playerData)
         {
-          //  _splineFollower.followSpeed = playerData.speed;
+            health = playerData.health;
         }
         public void ChangeAnimation(PlayerAnimType animType)
         {
